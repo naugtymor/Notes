@@ -5,9 +5,9 @@ import MainBlock from "./content/MainBlock/MainBlock";
 function App() {
 
   return (
-    <div className="App">
-      <MainBlock/>
-    </div>
+    <>
+        <MainBlock/>
+    </>
   );
 }
 
