@@ -1,8 +1,6 @@
 import React from 'react';
 import s from './MainBlock.module.scss';
-import searchIcon from "../../../common/styles/assets/search-icon.svg";
-import { AiOutlineSearch } from "react-icons/ai";
-
+import Note from "./Note/Note";
 
 const MainBlock = () => {
 
@@ -31,19 +29,10 @@ const MainBlock = () => {
                 </div>
             </div>
             <div className={s.notesBlock}>
-                <div className={s.note}>
-                    <div className={s.noteTitle}></div>
-                    <div className={s.noteDescription}></div>
-                    <div className={s.noteTags}></div>
-                    <div className={s.noteButtons}></div>
-                </div>
-                <div className={s.note}></div>
-                <div className={s.note}></div>
-                <div className={s.note}></div>
-                <div className={s.note}></div>
-                <div className={s.note}></div>
-                <div className={s.note}></div>
-                <div className={s.note}></div>
+                <Note/>
+                <Note/>
+                <Note/>
+
             </div>
 
         </div>
