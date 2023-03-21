@@ -1,28 +1,29 @@
 import React from 'react';
 import s from './Note.module.scss';
 
-// export type NotePropsType = {
-//     note: any
-//     onDelete: () => void
-// }
+export type NotePropsType = {
+    title: string
+    description: string
+    tags: string[]
+    // onDelete: () => void
+}
 
-const Note = () => {
+const Note: React.FC<NotePropsType> = ({title, description, tags}) => {
 
     return (
         <div className={s.note}>
             <div className={s.noteTitleBlock}>
-                <span className={s.title}>Shop</span>
+                <span className={s.title}>{title}</span>
             </div>
             <div className={s.noteDescription}>
-                <div className={s.description}>I need to buy a #compunter dsfiuhuisdf sdfihuisdfh isdugfigsdf iusdhfibhsdf iushdfiuhsd</div>
+                <div className={s.description}>{description}</div>
             </div>
             <div className={s.noteTags}>
-                <div className={s.tagContainer}>
-                    <span className={s.tag}>#computer</span>
-                </div>
-                <div className={s.tagContainer}>
-                    <span className={s.tag}>#need</span>
-                </div>
+                {tags.map((t, index) =>
+                    <div key={index} className={s.tagContainer}>
+                        <span className={s.tag}>#{t}</span>
+                    </div>
+                )}
             </div>
             <div className={s.noteButtons}>
                 <button className={s.button}>EDIT</button>

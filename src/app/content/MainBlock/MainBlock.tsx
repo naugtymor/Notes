@@ -3,6 +3,7 @@ import s from './MainBlock.module.scss';
 import Note from "./Note/Note";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {useFormik} from "formik";
+import {addNoteAC} from "./notes-reducer";
 
 export type FormikModalErrorType = {
     title?: string
@@ -25,7 +26,7 @@ const MainBlock = () => {
                 errors.title = 'Required';
             } else if (values.title.length < 3) {
                 errors.title = 'Must be 3 characters or more';
-            } else if (values.title.length > 10) {
+            } else if (values.title.length > 12) {
                 errors.title = 'Must be less then 12 characters';
             }
 
@@ -33,13 +34,13 @@ const MainBlock = () => {
                 errors.description = 'Required';
             } else if (values.description.length < 3) {
                 errors.description = 'Must be 3 characters or more';
-            } else if (values.description.length > 100) {
-                errors.description = 'Must be less then 100 characters';
+            } else if (values.description.length > 250) {
+                errors.description = 'Must be less then 250 characters';
             }
             return errors;
         },
         onSubmit: (values, e) => {
-            alert(JSON.stringify(values, null, 2));
+            dispatch(addNoteAC(values))
         },
     });
 
@@ -70,22 +71,14 @@ const MainBlock = () => {
                 <input placeholder={'🔍︎'} className={s.search}/>
             </div>
             <div className={s.tagsBlock}>
-                <div className={s.tagContainer}>
-                    <span className={s.tag}>#milk</span>
-                </div>
-                <div className={s.tagContainer}>
-                    <span className={s.tag}>#shop</span>
-                </div>
-                <div className={s.tagContainer}>
-                    <span className={s.tag}>#programming</span>
-                </div>
+                {tags.map((t, index) =>
+                    <div key={index} className={s.tagContainer}>
+                        <span className={s.tag}>#{t}</span>
+                    </div>
+                )}
             </div>
             <div className={s.notesBlock}>
-                <Note/>
-                <Note/>
-                <Note/>
-                <Note/>
-                <Note/>
+                {notes.map((p, index) => <Note tags={p.tags} title={p.title} description={p.description} key={index} />)}
             </div>
 
         </div>
