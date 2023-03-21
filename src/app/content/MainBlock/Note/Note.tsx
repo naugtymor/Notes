@@ -1,15 +1,17 @@
 import React from 'react';
 import s from './Note.module.scss';
+import {deleteNoteAC} from "../notes-reducer";
+import {ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
 export type NotePropsType = {
+    id: string
     title: string
     description: string
     tags: string[]
-    // onDelete: () => void
+    onDelete: (id: string, tags: string[]) => void
 }
 
-const Note: React.FC<NotePropsType> = ({title, description, tags}) => {
-
+const Note: React.FC<NotePropsType> = ({id, title, description, tags, onDelete}) => {
     return (
         <div className={s.note}>
             <div className={s.noteTitleBlock}>
@@ -27,7 +29,7 @@ const Note: React.FC<NotePropsType> = ({title, description, tags}) => {
             </div>
             <div className={s.noteButtons}>
                 <button className={s.button}>EDIT</button>
-                <button className={s.button}>DELETE</button>
+                <button className={s.button} onClick={() => {onDelete(id, tags)}}>DELETE</button>
             </div>
         </div>
     );

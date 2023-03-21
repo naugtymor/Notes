@@ -3,7 +3,7 @@ import s from './MainBlock.module.scss';
 import Note from "./Note/Note";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {useFormik} from "formik";
-import {addNoteAC} from "./notes-reducer";
+import {addNoteAC, deleteNoteAC} from "./notes-reducer";
 
 export type FormikModalErrorType = {
     title?: string
@@ -13,6 +13,10 @@ export type FormikModalErrorType = {
 const MainBlock = () => {
     const {notes, tags} = useAppSelector(s => s.notes)
     const dispatch = useAppDispatch();
+
+    const onDeleteNote = (id: string, tags: string[]) => {
+        dispatch(deleteNoteAC({id, tags}))
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -78,7 +82,12 @@ const MainBlock = () => {
                 )}
             </div>
             <div className={s.notesBlock}>
-                {notes.map((p, index) => <Note tags={p.tags} title={p.title} description={p.description} key={index} />)}
+                {notes.map((p, index) => <Note onDelete={onDeleteNote}
+                                               id={p.id}
+                                               tags={p.tags}
+                                               title={p.title}
+                                               description={p.description}
+                                               key={index}/>)}
             </div>
 
         </div>
