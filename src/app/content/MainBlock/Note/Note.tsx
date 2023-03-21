@@ -1,7 +1,5 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './Note.module.scss';
-import {deleteNoteAC} from "../notes-reducer";
-import {ActionCreatorWithPayload} from "@reduxjs/toolkit";
 
 export type NotePropsType = {
     id: string
@@ -12,13 +10,19 @@ export type NotePropsType = {
 }
 
 const Note: React.FC<NotePropsType> = ({id, title, description, tags, onDelete}) => {
+
+    const highlightedTag = tags.reduce((acc, tag) => {
+        const regex = new RegExp(tag, 'gi');
+        return acc.replace(regex, `<span style="color: rgb(255, 125, 0);">${tag}</span>`);
+    }, description);
+
     return (
         <div className={s.note}>
             <div className={s.noteTitleBlock}>
                 <span className={s.title}>{title}</span>
             </div>
             <div className={s.noteDescription}>
-                <div className={s.description}>{description}</div>
+                <div className={s.description} dangerouslySetInnerHTML={{ __html: highlightedTag }}></div>
             </div>
             <div className={s.noteTags}>
                 {tags.map((t, index) =>

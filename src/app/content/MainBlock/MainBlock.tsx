@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useState} from 'react';
 import s from './MainBlock.module.scss';
 import Note from "./Note/Note";
 import {useAppDispatch, useAppSelector} from "../../store/store";
@@ -11,12 +11,14 @@ export type FormikModalErrorType = {
 }
 
 const MainBlock = () => {
-    const {notes, tags} = useAppSelector(s => s.notes)
     const dispatch = useAppDispatch();
+    const {notes, tags} = useAppSelector(s => s.notes)
 
-    const onDeleteNote = (id: string, tags: string[]) => {
-        dispatch(deleteNoteAC({id, tags}))
-    }
+    const [searchTag, setSearchTag] = useState<string>('')
+    const inputRef = useRef<HTMLInputElement>(null);
+    const filteredNotes = notes.filter(note => {
+        return note.tags.some(tag => tag.includes(searchTag));
+    });
 
     const formik = useFormik({
         initialValues: {
@@ -48,6 +50,25 @@ const MainBlock = () => {
         },
     });
 
+    const onDeleteNote = (id: string, tags: string[]) => {
+        dispatch(deleteNoteAC({id, tags}))
+    }
+
+    const onTagClick = (t: string) => {
+        setSearchTag(t)
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
+    const handleSearchTagChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTag(event.target.value);
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
+
     return (
         <div className={s.mainBlock}>
             <div className={s.titleBlock}>
@@ -68,26 +89,41 @@ const MainBlock = () => {
                     </textarea>
                     {formik.errors.description && formik.touched.description &&
                         <span className={s.error}>{formik.errors.description}</span>}
-                    <button disabled={!(formik.isValid && formik.dirty)} type="submit" className={s.addButton}>ADD NOTE</button>
+                    <button disabled={!(formik.isValid && formik.dirty)}
+                            type="submit"
+                            className={s.addButton}>ADD NOTE</button>
                 </form>
             </div>
             <div className={s.searchBlock}>
-                <input placeholder={'🔍︎'} className={s.search}/>
+                <input ref={inputRef}
+                       onBlur={() => {setSearchTag('')}}
+                       placeholder={'🔍︎'} className={s.search}
+                       onChange={handleSearchTagChange}
+                       defaultValue={searchTag}/>
             </div>
             <div className={s.tagsBlock}>
                 {tags.map((t, index) =>
-                    <div key={index} className={s.tagContainer}>
+                    <div key={index} className={s.tagContainer} onClick={() => {onTagClick(t)}}>
                         <span className={s.tag}>#{t}</span>
                     </div>
                 )}
             </div>
             <div className={s.notesBlock}>
-                {notes.map((p, index) => <Note onDelete={onDeleteNote}
-                                               id={p.id}
-                                               tags={p.tags}
-                                               title={p.title}
-                                               description={p.description}
-                                               key={index}/>)}
+                {searchTag === ''
+                    ? notes.map((p, index) => <Note onDelete={onDeleteNote}
+                                                                  id={p.id}
+                                                                  tags={p.tags}
+                                                                  title={p.title}
+                                                                  description={p.description}
+                                                                  key={index}/>)
+                    : filteredNotes.map((p, index) => <Note
+                                                                    onDelete={onDeleteNote}
+                                                                    id={p.id}
+                                                                    tags={p.tags}
+                                                                    title={p.title}
+                                                                    description={p.description}
+                                                                    key={index}/>)
+                }
             </div>
 
         </div>

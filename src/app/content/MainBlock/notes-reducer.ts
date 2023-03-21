@@ -4,8 +4,13 @@ import {v4} from 'uuid';
 const slice = createSlice({
     name: "notes",
     initialState: {
-        notes: [],
-        tags: []
+        notes: [
+            {id: '1', tags: ['one'], title: 'First', description: 'I have #one question'},
+            {id: '2', tags: ['two'], title: 'Second', description: 'I have #two question'},
+            {id: '3', tags: ['three'], title: 'Third', description: 'I have #three question'},
+            {id: '4', tags: ['four'], title: 'Fourth', description: 'I have #four question'},
+        ],
+        tags: ['one', 'two', 'three', 'four']
     } as NotesStateType,
     reducers: {
         addNoteAC: (state, action: PayloadAction<{ title: string, description: string }>) => {
@@ -24,10 +29,10 @@ const slice = createSlice({
         },
         deleteNoteAC: (state, action: PayloadAction<{ id: string, tags: string[] }>) => {
             state.notes = state.notes.filter(n => n.id !== action.payload.id);
-            state.tags = state.notes.reduce((acc: string[], record: {id: string, tags: string[]}) => {
-                record.tags.forEach(tag => {
-                    if (!acc.includes(tag)) {
-                        acc.push(tag);
+            state.tags = state.notes.reduce((acc: string[], note: {tags: string[]}) => {
+                note.tags.forEach(n => {
+                    if (!acc.includes(n)) {
+                        acc.push(n);
                     }
                 });
                 return acc;
