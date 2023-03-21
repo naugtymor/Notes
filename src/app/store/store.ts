@@ -2,11 +2,12 @@ import {AnyAction, combineReducers} from 'redux';
 import thunk, {ThunkAction, ThunkDispatch} from 'redux-thunk'
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
 import {configureStore} from "@reduxjs/toolkit";
+import {notesReducer} from "../content/MainBlock/notes-reducer";
 
 
 
 const rootReducer = combineReducers({
-    // app: appReducer,
+    notes: notesReducer,
 })
 
 export const store = configureStore({

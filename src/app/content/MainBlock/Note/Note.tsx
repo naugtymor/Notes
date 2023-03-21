@@ -1,6 +1,11 @@
 import React from 'react';
 import s from './Note.module.scss';
 
+// export type NotePropsType = {
+//     note: any
+//     onDelete: () => void
+// }
+
 const Note = () => {
 
     return (
