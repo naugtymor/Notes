@@ -4,8 +4,6 @@ import Note from "./Note/Note";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {useFormik} from "formik";
 import {addNoteAC, deleteNoteAC} from "./notes-reducer";
-import {useModal} from "./Modal/useModal";
-import Modal from "./Modal/Modal";
 
 export type FormikModalErrorType = {
     title?: string
@@ -76,7 +74,6 @@ const MainBlock = () => {
             setSearchTag('')
         }
     }
-
 
     return (
         <div className={s.mainBlock}>

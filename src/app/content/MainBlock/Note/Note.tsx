@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from './Note.module.scss';
 import Modal from "../Modal/Modal";
 import {useModal} from "../Modal/useModal";
@@ -9,7 +9,6 @@ export type NotePropsType = {
     description: string
     tags: string[]
     onDelete: (id: string, tags: string[]) => void
-
 }
 
 const Note: React.FC<NotePropsType> = ({id, title, description, tags, onDelete}) => {
@@ -40,7 +39,7 @@ const Note: React.FC<NotePropsType> = ({id, title, description, tags, onDelete})
                 <button className={s.button} onClick={() => toggleEditNoteModal()}>EDIT</button>
                 <button className={s.button} onClick={() => {onDelete(id, tags)}}>DELETE</button>
             </div>
-            {editNoteModal && <Modal setModalActive={toggleEditNoteModal} hide={toggleEditNoteModal}/>}
+            {editNoteModal && <Modal title={title} description={description} setModalActive={toggleEditNoteModal} hide={toggleEditNoteModal}/>}
         </div>
     );
 }
