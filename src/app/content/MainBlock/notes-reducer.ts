@@ -5,12 +5,12 @@ const slice = createSlice({
     name: "notes",
     initialState: {
         notes: [
-            {id: '1', tags: ['one'], title: 'First', description: 'I have #one question'},
-            {id: '2', tags: ['two'], title: 'Second', description: 'I have #two questions'},
-            {id: '3', tags: ['three'], title: 'Third', description: 'I have #three questions'},
-            {id: '4', tags: ['four'], title: 'Fourth', description: 'I have #four questions'},
+            {id: '1', tags: ['shop'], title: 'Shop', description: 'I wanna go to the #shop'},
+            {id: '2', tags: ['idea'], title: 'Idea', description: 'I like this #idea'},
+            {id: '3', tags: ['left', 'right'], title: 'Pill', description: 'Which pill would you take? In the #left hand or #right hand?'},
+            {id: '4', tags: ['questions'], title: 'Questions', description: 'I have four #questions for you'},
         ],
-        tags: ['one', 'two', 'three', 'four']
+        tags: ['shop', 'idea', 'left', 'right', 'questions']
     } as NotesStateType,
     reducers: {
         addNoteAC: (state, action: PayloadAction<{ title: string, description: string }>) => {

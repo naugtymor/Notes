@@ -119,17 +119,18 @@
   .tagsBlock {
     @include flex(row, center, center, wrap);
     min-height: 30px;
-    width: 100%;
-    margin: 10px 0 10px;
+    width: 80%;
+    margin: 5px 0 5px;
 
     .tagContainer {
       @include flex(column, center, center, wrap);
       min-width: 70px;
       height: 30px;
-      margin-right: 10px;
       border-radius: 20px;
       background-color: rgb(255, 125, 0);
       cursor: pointer;
+      margin: 5px 0 5px;
+      margin-right: 10px;
 
       .tag {
         @include text(17px, 17px, 600);
