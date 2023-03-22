@@ -27,6 +27,28 @@ const slice = createSlice({
                 tags: newTags
             });
         },
+        editNoteAC: (state, action: PayloadAction<{id: string, title: string, description: string, tags: string[] }>) => {
+            const content = action.payload.description;
+            const regex = /#\w+/g;
+            const tagMatches = content.match(regex);
+            const newTags = tagMatches ? tagMatches.map(tag => tag.slice(1)) : [];
+
+            const note = state.notes.find(n => n.id === action.payload.id);
+            if (note) {
+                note.title = action.payload.title
+                note.description = action.payload.description
+                note.tags = newTags
+            }
+
+            state.tags = state.notes.reduce((acc: string[], note: {tags: string[]}) => {
+                note.tags.forEach(n => {
+                    if (!acc.includes(n)) {
+                        acc.push(n);
+                    }
+                });
+                return acc;
+            }, []);
+        },
         deleteNoteAC: (state, action: PayloadAction<{ id: string, tags: string[] }>) => {
             state.notes = state.notes.filter(n => n.id !== action.payload.id);
             state.tags = state.notes.reduce((acc: string[], note: {tags: string[]}) => {
@@ -51,7 +73,7 @@ export type NoteType = {
     description: string
     tags: string[]
 }
-export const {addNoteAC, deleteNoteAC} = slice.actions;
+export const {addNoteAC, deleteNoteAC, editNoteAC} = slice.actions;
 
 export const notesReducer = slice.reducer;
 

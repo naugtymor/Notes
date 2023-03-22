@@ -39,7 +39,7 @@ const Note: React.FC<NotePropsType> = ({id, title, description, tags, onDelete})
                 <button className={s.button} onClick={() => toggleEditNoteModal()}>EDIT</button>
                 <button className={s.button} onClick={() => {onDelete(id, tags)}}>DELETE</button>
             </div>
-            {editNoteModal && <Modal title={title} description={description} setModalActive={toggleEditNoteModal} hide={toggleEditNoteModal}/>}
+            {editNoteModal && <Modal tags={tags} id={id} title={title} description={description} setModalActive={toggleEditNoteModal} hide={toggleEditNoteModal}/>}
         </div>
     );
 }

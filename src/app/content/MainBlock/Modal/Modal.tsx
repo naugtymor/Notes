@@ -2,20 +2,27 @@ import s from "./Modal.module.scss"
 import React from "react";
 import {useFormik} from "formik";
 import {FormikModalErrorType} from "../MainBlock";
+import {editNoteAC} from "../notes-reducer";
+import {useAppDispatch} from "../../../store/store";
 
 export type ModalPropsType = {
     setModalActive: (modalActive: boolean) => void
     hide: () => void
     title: string
     description: string
+    id: string
+    tags: string[]
 }
 
-const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, description}) => {
+const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, description, id, tags}) => {
+    const dispatch = useAppDispatch();
 
     const formik = useFormik({
         initialValues: {
+            id: id,
             title: title,
             description: description,
+            tags: tags
         },
         validate: (values) => {
             const errors: FormikModalErrorType = {};
@@ -37,11 +44,11 @@ const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, descripti
             }
             return errors;
         },
-        onSubmit: (values, e) => {
-            console.log(values)
+        onSubmit: (values) => {
+            dispatch(editNoteAC(values))
+            hide()
         },
     });
-
 
     return (
         <div className={s.modalBlock} onClick={() => setModalActive(false)}>
@@ -49,28 +56,28 @@ const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, descripti
                 <div className={s.closeBlock} onClick={() => hide()}></div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className={s.noteTitleBlock}>
-                        <input style={formik.errors.title && formik.touched.title ? {border: `1px solid #bd1010`} : {}}
-                               {...formik.getFieldProps('title')}
-                               placeholder={'Title'}
-                               className={s.title}/>
-                        {/*{formik.errors.title && formik.touched.title &&*/}
-                        {/*    <span className={s.error}>{formik.errors.title}</span>}                    */}
+                        <input
+                            style={formik.errors.title && formik.touched.title ? {borderBottom: `2px solid #bd1010`} : {}}
+                            {...formik.getFieldProps('title')}
+                            placeholder={'Title'}
+                            className={s.title}/>
                     </div>
                     <div className={s.noteDescription}>
-                        <textarea style={formik.errors.description && formik.touched.description ? {border: `1px solid #bd1010`} : {}}
-                                  {...formik.getFieldProps('description')}
-                                  placeholder={'Description'}
-                                  className={s.description}>
+                        <textarea
+                            style={formik.errors.description && formik.touched.description ? {border: `2px solid #bd1010`} : {}}
+                            {...formik.getFieldProps('description')}
+                            placeholder={'Description'}
+                            className={s.description}>
                         </textarea>
-                        {formik.errors.description && formik.touched.description &&
-                            <span className={s.error}>{formik.errors.description}</span>}
                     </div>
                     <div className={s.noteButtons}>
                         <button disabled={!(formik.isValid && formik.dirty)}
                                 type={"submit"}
                                 className={s.button}
-                                onClick={() => {}}>
-                            SAVE</button>
+                                onClick={() => {
+                                }}>
+                            SAVE
+                        </button>
                     </div>
                 </form>
             </div>
