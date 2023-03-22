@@ -96,7 +96,7 @@ const MainBlock = () => {
                     {formik.errors.description && formik.touched.description &&
                         <span className={s.error}>{formik.errors.description}</span>}
                     <button disabled={!(formik.isValid && formik.dirty)}
-                            type="submit"
+                            type={"submit"}
                             className={s.addButton}>ADD NOTE</button>
                 </form>
             </div>
@@ -125,7 +125,8 @@ const MainBlock = () => {
                                                                     tags={p.tags}
                                                                     title={p.title}
                                                                     description={p.description}
-                                                                    key={index}/>)
+                                                                    key={index}
+                />)
                 }
             </div>
         </div>

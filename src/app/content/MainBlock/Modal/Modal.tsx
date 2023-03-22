@@ -73,9 +73,7 @@ const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, descripti
                     <div className={s.noteButtons}>
                         <button disabled={!(formik.isValid && formik.dirty)}
                                 type={"submit"}
-                                className={s.button}
-                                onClick={() => {
-                                }}>
+                                className={s.button}>
                             SAVE
                         </button>
                     </div>
