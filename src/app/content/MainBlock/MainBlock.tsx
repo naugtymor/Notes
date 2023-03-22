@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import s from './MainBlock.module.scss';
 import Note from "./Note/Note";
 import {useAppDispatch, useAppSelector} from "../../store/store";
@@ -16,7 +16,6 @@ const MainBlock = () => {
 
     const [searchTag, setSearchTag] = useState<string>('');
     const [isButtonHolding, setIsButtonHolding] = useState<boolean>(false);
-
     const inputRef = useRef<HTMLInputElement>(null);
 
     const filteredNotes = notes.filter(note => searchTag !==  "" ? note.tags.some(tag => tag.includes(searchTag)) : note);
@@ -47,7 +46,8 @@ const MainBlock = () => {
             return errors;
         },
         onSubmit: (values, e) => {
-            dispatch(addNoteAC(values))
+            dispatch(addNoteAC(values));
+            e.resetForm();
         },
     });
 
@@ -110,8 +110,10 @@ const MainBlock = () => {
             </div>
             <div className={s.tagsBlock}>
                 {tags.map((t, index) =>
-                    <div key={index} className={s.tagContainer} onMouseDown={() => {setIsButtonHolding(true)}}
-                         onClick={() => {onTagClick(t)}} onMouseUp={() => {setIsButtonHolding(false)}}>
+                    <div key={index} className={s.tagContainer}
+                         onMouseDown={() => {setIsButtonHolding(true)}}
+                         onClick={() => {onTagClick(t)}}
+                         onMouseUp={() => {setIsButtonHolding(false)}}>
                         <span className={s.tag}>#{t}</span>
                     </div>
                 )}

@@ -12,13 +12,12 @@ export type NotePropsType = {
 }
 
 const Note: React.FC<NotePropsType> = ({id, title, description, tags, onDelete}) => {
+    const {editNoteModal, toggleEditNoteModal} = useModal()
 
     const highlightedTag = tags.reduce((acc, tag) => {
         const regex = new RegExp(tag, 'gi');
         return acc.replace(regex, `<span style="color: rgb(255, 125, 0);">${tag}</span>`);
     }, description);
-
-    const {editNoteModal, toggleEditNoteModal} = useModal()
 
     return (
         <div className={s.note}>

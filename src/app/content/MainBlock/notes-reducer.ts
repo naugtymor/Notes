@@ -6,9 +6,9 @@ const slice = createSlice({
     initialState: {
         notes: [
             {id: '1', tags: ['one'], title: 'First', description: 'I have #one question'},
-            {id: '2', tags: ['two'], title: 'Second', description: 'I have #two question'},
-            {id: '3', tags: ['three'], title: 'Third', description: 'I have #three question'},
-            {id: '4', tags: ['four'], title: 'Fourth', description: 'I have #four question'},
+            {id: '2', tags: ['two'], title: 'Second', description: 'I have #two questions'},
+            {id: '3', tags: ['three'], title: 'Third', description: 'I have #three questions'},
+            {id: '4', tags: ['four'], title: 'Fourth', description: 'I have #four questions'},
         ],
         tags: ['one', 'two', 'three', 'four']
     } as NotesStateType,
