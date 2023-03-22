@@ -1,9 +1,11 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import s from './MainBlock.module.scss';
 import Note from "./Note/Note";
 import {useAppDispatch, useAppSelector} from "../../store/store";
 import {useFormik} from "formik";
 import {addNoteAC, deleteNoteAC} from "./notes-reducer";
+import {useModal} from "./Modal/useModal";
+import Modal from "./Modal/Modal";
 
 export type FormikModalErrorType = {
     title?: string
@@ -14,11 +16,12 @@ const MainBlock = () => {
     const dispatch = useAppDispatch();
     const {notes, tags} = useAppSelector(s => s.notes)
 
-    const [searchTag, setSearchTag] = useState<string>('')
+    const [searchTag, setSearchTag] = useState<string>('');
+    const [isButtonHolding, setIsButtonHolding] = useState<boolean>(false);
+
     const inputRef = useRef<HTMLInputElement>(null);
-    const filteredNotes = notes.filter(note => {
-        return note.tags.some(tag => tag.includes(searchTag));
-    });
+
+    const filteredNotes = notes.filter(note => searchTag !==  "" ? note.tags.some(tag => tag.includes(searchTag)) : note);
 
     const formik = useFormik({
         initialValues: {
@@ -61,12 +64,18 @@ const MainBlock = () => {
         }
     };
 
-    const handleSearchTagChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onSearchTagChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setSearchTag(event.target.value);
         if (inputRef.current) {
             inputRef.current.focus();
         }
     };
+
+    const onSearchInputBlur = () => {
+        if (!isButtonHolding) {
+            setSearchTag('')
+        }
+    }
 
 
     return (
@@ -96,27 +105,22 @@ const MainBlock = () => {
             </div>
             <div className={s.searchBlock}>
                 <input ref={inputRef}
-                       onBlur={() => {setSearchTag('')}}
-                       placeholder={'🔍︎'} className={s.search}
-                       onChange={handleSearchTagChange}
+                       onBlur={() => {onSearchInputBlur()}}
+                       placeholder={'🔍︎'}
+                       className={s.search}
+                       onChange={onSearchTagChange}
                        defaultValue={searchTag}/>
             </div>
             <div className={s.tagsBlock}>
                 {tags.map((t, index) =>
-                    <div key={index} className={s.tagContainer} onClick={() => {onTagClick(t)}}>
+                    <div key={index} className={s.tagContainer} onMouseDown={() => {setIsButtonHolding(true)}}
+                         onClick={() => {onTagClick(t)}} onMouseUp={() => {setIsButtonHolding(false)}}>
                         <span className={s.tag}>#{t}</span>
                     </div>
                 )}
             </div>
             <div className={s.notesBlock}>
-                {searchTag === ''
-                    ? notes.map((p, index) => <Note onDelete={onDeleteNote}
-                                                                  id={p.id}
-                                                                  tags={p.tags}
-                                                                  title={p.title}
-                                                                  description={p.description}
-                                                                  key={index}/>)
-                    : filteredNotes.map((p, index) => <Note
+                {filteredNotes.map((p, index) => <Note
                                                                     onDelete={onDeleteNote}
                                                                     id={p.id}
                                                                     tags={p.tags}
@@ -125,7 +129,6 @@ const MainBlock = () => {
                                                                     key={index}/>)
                 }
             </div>
-
         </div>
     );
 }
