@@ -1,7 +1,6 @@
 import s from "./Modal.module.scss"
 import React from "react";
 import {useFormik} from "formik";
-import {addNoteAC} from "../notes-reducer";
 import {FormikModalErrorType} from "../MainBlock";
 
 export type ModalPropsType = {
@@ -15,8 +14,8 @@ const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, descripti
 
     const formik = useFormik({
         initialValues: {
-            title: '',
-            description: '',
+            title: title,
+            description: description,
         },
         validate: (values) => {
             const errors: FormikModalErrorType = {};
@@ -50,10 +49,21 @@ const Modal: React.FC<ModalPropsType> = ({setModalActive, hide, title, descripti
                 <div className={s.closeBlock} onClick={() => hide()}></div>
                 <form onSubmit={formik.handleSubmit}>
                     <div className={s.noteTitleBlock}>
-                        <span className={s.title}>{title}</span>
+                        <input style={formik.errors.title && formik.touched.title ? {border: `1px solid #bd1010`} : {}}
+                               {...formik.getFieldProps('title')}
+                               placeholder={'Title'}
+                               className={s.title}/>
+                        {/*{formik.errors.title && formik.touched.title &&*/}
+                        {/*    <span className={s.error}>{formik.errors.title}</span>}                    */}
                     </div>
                     <div className={s.noteDescription}>
-                        <div className={s.description}>{description}</div>
+                        <textarea style={formik.errors.description && formik.touched.description ? {border: `1px solid #bd1010`} : {}}
+                                  {...formik.getFieldProps('description')}
+                                  placeholder={'Description'}
+                                  className={s.description}>
+                        </textarea>
+                        {formik.errors.description && formik.touched.description &&
+                            <span className={s.error}>{formik.errors.description}</span>}
                     </div>
                     <div className={s.noteButtons}>
                         <button disabled={!(formik.isValid && formik.dirty)}
