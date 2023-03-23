@@ -30,8 +30,8 @@ const MainBlock = () => {
 
             if (!values.title) {
                 errors.title = 'Required';
-            } else if (values.title.length < 3) {
-                errors.title = 'Must be 3 characters or more';
+            } else if (values.title.length < 1) {
+                errors.title = 'Must be 1 characters or more';
             } else if (values.title.length > 12) {
                 errors.title = 'Must be less then 12 characters';
             }
